@@ -1,0 +1,12 @@
+---
+title: "Successful Synthesis"
+subtitle: "Tips and Tricks for Avoiding Common Pitfalls in Evidence Synthesis"
+format:
+  revealjs: 
+    theme: moon
+editor: visual
+---
+
+## Navigating the jungle of synthesis
+
+## Avoiding common pitfalls
