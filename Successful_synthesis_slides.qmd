@@ -7,6 +7,231 @@ format:
 editor: visual
 ---
 
-## Navigating the jungle of synthesis
+# Navigating the [jungle]{style="color: darkgreen "} of synthesis
 
-## Avoiding common pitfalls
+## Evidence synthesis products
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Sutton et al. (2019). https://doi.org/10.1111/hir.12276."
+library(visNetwork)
+library(tidyverse)
+ES_products <- readRDS(paste0(here::here(),"/data/ES_products.RDS"))
+
+nodes1<-unique(ES_products$`Review family`)
+nodes2<-unique(ES_products$`Review type`)
+
+nodes<-data.frame(id=1:54, label=c(nodes1, nodes2),
+                  group=c(rep("Family", 7), rep("Types", 47)),
+                  colour=c("#E495A5", "#CEA472", "#9CB469", "#56BD96", "#46BAC8",
+                           "#99A9E2", "#D497D3",rep("darkblue",47)),
+                  font.color="white"
+                  ) 
+
+edges<-ES_products |> 
+  select(`Review family`, `Review type`)
+
+edges<-edges |> 
+  left_join(nodes, by=c(`Review family`="label"))
+
+edges2<-edges |> 
+  left_join(nodes, by=c(`Review type`="label"))
+
+edges<-edges2 |> 
+  mutate(from=id.x,
+         to=id.y) |> 
+  select(from,to)
+
+visNetwork(nodes, edges, height = "500px", width = "100%",labelHighLightBold=TRUE) |> 
+  visGroups(groupname = "Family", color="red") |> 
+  visGroups(groupname = "Types", color="darkblue")
+
+```
+
+## [Traditional Reviews]{style="color: orange"}
+
+![Critical review, Integrative Review, Narrative review, Narrative summary, State of the art review](https://media.giphy.com/media/l2JdXXJVLPRYqZljq/giphy.gif){fig-align="center"}
+
+## Systematic Review
+
+![Cochrane, Comparative effectiveness, Diagnostic, Meta-analysis, NMA,Prognostic, Psychometric, Systematic review](https://media.giphy.com/media/Cz6TlrRVVyv9S/giphy.gif){fig-align="center"}
+
+## Review of reviews
+
+![Review of Reviews,Umbrella review](https://media.giphy.com/media/3o6MbfsyqYfeUnBEcM/giphy.gif){fig-align="center"}
+
+## [Rapid Reviews]{style="color: orange"}
+
+![Rapid Review,Rapid evidence assessment,Rapid Realist Synthesis](https://media.giphy.com/media/l2Je9UqtXm3SujxWE/giphy.gif){fig-align="center"}
+
+## Qualitative systematic review
+
+![Qualitative Evidence Synthesis (QES),Qualitative Interpretive Meta-synthesis, Qualitative meta-synthesis, Qualitative research synthesis, Best fit framework synthesis, Framework synthesis, Meta-aggregation, Meta-Ethnography, Meta-interpretation, Meta-narrative review, Meta-Study,Meta-Summary, Thematic Synthesis](https://media.giphy.com/media/xT5LMRLP8qm2eLrbFe/giphy.gif){fig-align="center"}
+
+## Mixed Methods
+
+![Mixed Methods Synthesis,Bayesian Meta-Analysis, EPPI-Centre Review,Critical interpretive synthesis,Narrative Synthesis,Realist Synthesis,Rapid Realist Synthesis](https://media.giphy.com/media/3orif28WBMhO8qNNh6/giphy.gif){fig-align="center"}
+
+## Purpose specific
+
+![Concept Synthesis,Expert Opinion/Policy Review,Technology Assessment Review (Health Technology Assessment),Scoping Review,Mapping Review,Methodological Review,Systematic Search and Review,Systematized Review](https://media.giphy.com/media/xT5LMAsVmaPyZRQBm8/giphy.gif){fig-align="center"}
+
+# [Which Review-type to choose?](https://drmattg.github.io/Evidence_synthesis/index.html)
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(DiagrammeR)
+grViz(diagram = "digraph flowchart {
+      # define node aesthetics
+      node [fontname = Arial, shape = rect, color = DeepSkyBlue, style = filled, fontcolor = White]        
+      tab1 [label = 'Do you have >3 on the review team?']
+      tab2 [label = 'Do you have 9 to 18 months to conduct the review?']
+      tab3 [label = 'Reviews need a multi-person team for unbiased article screening but see Rapid Reviews']
+      tab4 [label = 'Do you have a broad topic or multiple questions?']
+      tab5 [label = 'Are you an expert or know the literature on this topic well?']
+      tab6 [label = 'Scoping Review/Systematic Map', color=DarkGreen]
+      tab7 [label = 'Are there multiple published Systematic Reviews on your topic?']
+      tab8 [label = 'Umbrella Review or Review of Reviews',color=DarkGreen]
+      tab9 [label = 'Do you have a well formatted research question,e.g. PICO and inclusion/exclusion criteria?']
+      tab10 [label = 'Do you think the included studies are homogenous enough to statistically evaluate, synthesise and summarise results objectively?']
+      tab11 [label = 'A well formulated question is vital - speak to your library search specialist']
+      tab12 [label = 'Systematic Review & meta-analysis',color=DarkGreen]
+      tab13 [label = 'Systematic Review',color=DarkGreen]
+      tab14 [label='Rapid Review',color=DarkGreen]
+      tab15 [label='Add subject experts to join the team and use a Rapid Review']
+# set up node layout
+      tab1 -> tab2[label=Yes];
+      tab1 -> tab3[label=No];
+      tab2 -> tab4[label=Yes];
+      tab2 -> tab5[label=No];
+      tab5 -> tab14[label=Yes];
+      tab5 -> tab15[label=No];
+      tab4 -> tab6[label=Yes];
+      tab4 -> tab7[label=No];
+      tab7 -> tab8[label=Yes];
+      tab7 -> tab9[label=No];
+      tab9 -> tab10[label=Yes];
+      tab9 -> tab11[label=No];
+      tab10 -> tab12[label=Yes];
+      tab10 -> tab13[label=No];
+      tab11 -> tab9[label='Rethink the question']
+      tab3 -> tab14
+      }
+      ")
+
+```
+
+## What questions are you asking?
+
+-   What is the evidence like?
+
+-   What resources do you have (time, expertise)?
+
+-   What are your publication/dissemination plans?
+
+-   What domains of application are you interested in?
+
+## Which review-type?
+
+-   [**Do not use**]{style="color: red"} umbrella review, maps or scoping if you want to know "what works"
+
+-   [**Do not use**]{style="color: red"} rapid reviews, traditional reviews, traditional reviews if you care about rigour
+
+-   [**Do not use**]{style="color: red"} systematic review or meta-analysis if you do not have resource
+
+## Want to know "what works" but have no resource?
+
+### !["Poor man\'s evidence synthesis" - Decision-theoretic models](images/1-s2.0-S0006320717313459-gr1_lrg.jpg)
+
+Highly repeatable and transparent but can be wrong!
+
+# Avoiding common pitfalls
+
+![Haddaway, N.R. et al. (2020). https://doi.org/10.1038/s41559-020-01295-x](images/41559_2020_1295_Fig1_HTML.webp){fig-align="center"}
+
+## Lack of relevance
+
+***Make sure the scope of the review is useful for the intended audience***
+
+![](https://media.giphy.com/media/3oriePkWRYdfTPCuSk/giphy.gif){fig-align="center"}
+
+## Mission creep and lack of a protocol
+
+![Sánchez-Bayo & Wyckhuys (2019) https://doi.org/10.1016/j.biocon.2019.01.020.](images/insect_decline.png){fig-align="center"}
+
+## Lack of transparency/replicability
+
+![](https://media.giphy.com/media/3o6MbiM0MzgvxRxrI4/giphy.gif){fig-align="center"}
+
+## Inappropriate search methods and strategy
+
+![Sánchez-Bayo & Wyckhuys (2019) https://doi.org/10.1016/j.biocon.2019.01.020.](images/search-01.png){fig-align="center"}
+
+## 
+
+~~Publication bias~~ Small study bias
+
+![](https://cdn.scribbr.com/wp-content/uploads/2022/10/funnel-plots-for-publication-bias.webp){fig-align="center"}
+
+## Treating all evidence as equally valid
+
+![Bicknell et al. https://doi.org/10.1016/j.cub.2014.10.067 comment on Burivalovaet al. 2014. https://doi.org/10.1016/j.cub.2014.06.065](images/1-s2.0-S0960982214014158-gr1.jpg){fig-align="center"}
+
+## Inappropriate synthesis
+
+Vote-counting is the tallying-up of studies based on statistical significance and/or direction of their findings
+
+![Burivalova, Z. et al. (2017) https://doi.org/10.1111/conl.12244](images/Picture4.jpg){fig-align="center"}
+
+## A lack of consistency and error checking (working individually)
+
+![](https://media.giphy.com/media/gVHbHRo6ORSRq/giphy.gif){fig-align="center"}
+
+# Recommended actions
+
+::: columns
+::: {.column width="33%"}
+-   Familiarise yourself with the best practice
+
+-   Make use of freely accessible guidance
+
+-   Seek training
+:::
+
+::: {.column width="33%"}
+-   Connect with existing COPs
+
+-   Follow Open Science principles
+
+-   Ensure that a review is clear in its purpose and objectives.
+:::
+
+::: {.column width="33%"}
+-   Ensure the intended level of rigour
+
+-   Engage with stakeholders/experts
+
+-   Demonstrate and assess rigour using existing tools
+:::
+:::
+
+## Where to go for help
+
+-   [CEE Guidelines](https://environmentalevidence.org/information-for-authors/)
+
+-   [CEE Training](https://synthesistraining.github.io/)
+
+-   [ESMARConf](https://esmarconf.org/recordings.html)
+
+-   [CEEDER existing reviews](https://environmentalevidence.org/ceeder-search/)
+
+-   [ESHackathon](https://www.eshackathon.org/)
+
+-   [NINA-Biblioteket](https://nina.sharepoint.com/SitePages/nn_bibl_Biblioteket.aspx)
+
+-   [Me!](mailto:matthew.grainger@nina.no)
