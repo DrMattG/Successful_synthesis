@@ -146,7 +146,7 @@ grViz(diagram = "digraph flowchart {
 
 ## Want to know "what works" but have no resource?
 
-### !["Poor man\'s evidence synthesis" - Decision-theoretic models](images/1-s2.0-S0006320717313459-gr1_lrg.jpg)
+### !["Poor man's evidence synthesis" - Decision-theoretic models](images/1-s2.0-S0006320717313459-gr1_lrg.jpg)
 
 Highly repeatable and transparent but can be wrong!
 
